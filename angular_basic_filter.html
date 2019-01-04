@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Angular Basic Filter</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body ng-controller="myCtrl">
+    <div class="container">
+        <h2>Custom Filter</h2>
+        <table class="table table-bordered">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Date</th>
+            <th>Salary</th>
+        </tr>
+        <tr ng-repeat="list in persons">
+            <td>{{list.id}}</td>
+            <td>{{list.name}}</td>
+            <td>{{list.phone | phoneFilter}}</td>
+            <td>{{list.date | dateFilter}}</td>
+            <td>{{list.salary | currency}}</td>
+        </tr>            
+        </table>
+    </div>
+
+    <script src="js/angular.min.js"></script>
+    <script>
+        var app = angular.module('myApp', []);
+
+        app.controller('myCtrl', ['$scope', function($scope) {
+            $scope.persons = [
+                {id: 1000, name: 'นาย A', phone: '0812345678', date: '2016/07/01 10:23:22', salary: 28000},
+                {id: 2000, name: 'นาย B', phone: '0823456789', date: '2016/08/12 21:01:00', salary: 35000},
+                {id: 3000, name: 'นาย C', phone: '0834567890', date: '2016/09/23 09:21:11', salary: 20000}
+            ];
+        }]);
+        
+        app.filter('phoneFilter', function(){
+            return function(value){
+                var p1 = value.slice(0,3);
+                var p2 = value.slice(3,6);
+                var p3 = value.slice(6,10);
+                
+                //console.log(p1, p2, p3);          
+                
+                return p1 + '-' + p2 + '-' + p3;
+            };
+        });
+        
+        
+        app.filter('dateFilter', function(){
+            return function(value){
+                var month = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+                
+                var data = value.split(' ');
+                var date = data[0].split('/');
+                
+                var result = parseInt(date[2]) + ' ' +  month[(parseInt(date[1]) - 1)] + ' ' + (parseInt(date[0]) + 543);
+                
+                //console.log(result);
+                
+                return result + ' '  + data[1] + ' น.';
+            };
+        });
+
+    </script>
+</body>
+</html>

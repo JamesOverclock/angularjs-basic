@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Angular Basic CRUD</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body ng-controller="myCtrl">
+    <div class="container">
+        <h2>Contact</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Telephone</th>
+                    <th>Email</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="list in persons">
+                    <td>{{$index+1}}</td>
+                    <td>{{list.name}}</td>
+                    <td>{{list.tel}}</td>
+                    <td>{{list.email}}</td>
+                    <td><a href="#" ng-click="editData($index)">Edit</a></td>
+                    <td><a href="#" ng-click="deleteData($index)">Delete</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Add Contact</h2>
+        Name:
+        <input type="text" class="form-control" ng-model="data.name">
+        Telephone:
+        <input type="text" class="form-control" ng-model="data.tel">
+        Email:
+        <input type="text" class="form-control" ng-model="data.email">
+        <br><button class="btn btn-primary" ng-click="addData()">Add</button>
+        <button class="btn btn-info" ng-click="updateData()">Update</button>
+    </div>
+
+    <script src="js/angular.min.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+
+        app.controller('myCtrl',['$scope',function($scope){
+            $scope.persons = [{name:'aaa',tel:'08212345678',email:'test@gmail.com'}];
+
+            $scope.addData = function(){
+                $scope.persons.push($scope.data);
+                $scope.data = {};
+            }
+
+            $scope.editData = function(index){
+                $scope.currentIndex = index;
+                $scope.data.name = $scope.persons[index].name;
+                $scope.data.tel = $scope.persons[index].tel;
+                $scope.data.email = $scope.persons[index].email;
+            }
+
+            $scope.updateData = function(){
+                var index = $scope.currentIndex;
+                $scope.persons[index].name = $scope.data.name;
+                $scope.persons[index].tel = $scope.data.tel;
+                $scope.persons[index].email = $scope.data.email;
+                $scope.data = {};
+            }
+
+            $scope.deleteData = function(index){
+                $scope.persons.splice(index,1);
+            }
+
+        }]);
+    </script>
+</body> 
+</html>

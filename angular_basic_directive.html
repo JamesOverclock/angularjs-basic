@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Angular Basic Directive</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+
+<body ng-controller="myCtrl">
+    <div class="container">        
+    	<h2>Custom Directive</h2>
+
+    	<p>Number : {{number}}</p>
+        <div input-number></div>
+        <!--<input number-only ng-model="number" class="form-control">-->
+    </div>
+
+    <script src="js/angular.min.js"></script>
+    <script>
+	    var app = angular.module('myApp', []);
+
+	    app.controller('myCtrl', ['$scope', function($scope) {
+	    	
+	    }]);
+        
+        app.directive('inputNumber', function(){
+            return {
+              template: '<input number-only ng-model="number" class="form-control">'
+            };
+        });
+
+	    app.directive('numberOnly', function(){
+	    	return function(scope, element, attrs){
+                //console.log(scope, element, attrs);
+                
+                element.bind('keypress', function(event){
+                    //console.log(event.key, event.which);
+                    if((event.which < 48 || event.which > 57) && (event.which != 8 && event.which != 0)){
+                        event.preventDefault();
+                    }
+                });
+            };
+	    });
+
+    </script>
+</body>
+
+</html>
